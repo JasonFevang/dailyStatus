@@ -5,21 +5,12 @@
 #yesterday section
 
 
-#dailyStatusdd/mm/yy
+#dailyStatusyy/mm/dd
 require 'date'
 
 class DS
 	def initialize
 		@today = Date.today
-	end
-
-	def previous_DS_filename
-		i=0
-		begin
-			i+=1
-		 	ds_filename = DS_filename(@today-i)
-		end while !File.exist?(ds_filename) #continue until the file exists, skip weekends
-		return ds_filename
 	end
 
 	def day(date) #returns day of the month as dd
@@ -37,7 +28,7 @@ class DS
 	end
 
 	def year(date) #returns year as yyyy
-		date.year.to_s.slice(2,2)
+		date.year.to_s[2,2]
 	end
 
 	def DS_filename(date) 
@@ -47,6 +38,16 @@ class DS
 
 	def DS_date(date)
 		self.year(date) + "-" + self.month(date) + "-" + self.day(date) + "\n"
+	end
+
+
+	def previous_DS_filename #finds the most recent daily status, skips weekends and off days
+		i=0
+		begin
+			i+=1
+		 	ds_filename = DS_filename(@today-i)
+		end while !File.exist?(ds_filename)
+		return ds_filename
 	end
 
 	def get_previous_tasks
@@ -72,20 +73,6 @@ class DS
 		return @copied_text.to_s
 	end
 
-	def create_new_DS
-		if File.exist?(DS_filename(@today))
-			if File.exist?(DS_filename(@today+1))
-				puts "today's and tomorrow's status already exists"
-			else
-				@today += 1
-				puts "Today's status already exists, creating tomorrow's status"
-				print_ds_status
-			end
-		else
-			print_ds_status
-		end
-	end
-
 	def print_ds_status
 		newDS = File.open(self.DS_filename(@today), "w")
 		newDS.puts "-------------------------------------\n*Status Update*: " + 
@@ -101,17 +88,31 @@ class DS
 		get_previous_tasks +
 		"*Working on today:*\n1. \n\n*Any blockers?*\nNo\n-------------------------------------"
 	end
+
+	def create_new_DS
+		if File.exist?(DS_filename(@today))
+			if File.exist?(DS_filename(@today+1))
+				puts "today's and tomorrow's status already exists"
+			else
+				@today += 1
+				puts "Today's status already exists, creating tomorrow's status"
+				print_ds_status
+			end
+		else
+			print_ds_status
+		end
+	end
 end
 
 DS1 = DS.new
-# puts DS1.month(Date.today)
-# puts DS1.month(Date.today+230)
-# puts DS1.day(Date.today)
-# puts DS1.day(Date.today-10)
-# puts DS1.year(Date.today)
+puts DS1.month(Date.today)
+puts DS1.month(Date.today+230)
+puts DS1.day(Date.today)
+puts DS1.day(Date.today-10)
+puts DS1.year(Date.today)
 # puts DS1.DS_filename(Date.today)
 # puts DS1.DS_date(Date.today)
 # puts DS1.previous_DS_filename
 # puts DS1.get_previous_tasks
 #DS1.print_ds_status
-DS1.create_new_DS
+# DS1.create_new_DS
