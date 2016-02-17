@@ -105,14 +105,14 @@ class DS
 end
 
 DS1 = DS.new
-puts DS1.month(Date.today)
-puts DS1.month(Date.today+230)
-puts DS1.day(Date.today)
-puts DS1.day(Date.today-10)
-puts DS1.year(Date.today)
+# puts DS1.month(Date.today)
+# puts DS1.month(Date.today+230)
+# puts DS1.day(Date.today)
+# puts DS1.day(Date.today-10)
+# puts DS1.year(Date.today)
 # puts DS1.DS_filename(Date.today)
 # puts DS1.DS_date(Date.today)
 # puts DS1.previous_DS_filename
 # puts DS1.get_previous_tasks
-#DS1.print_ds_status
-# DS1.create_new_DS
+# DS1.print_ds_status
+DS1.create_new_DS
